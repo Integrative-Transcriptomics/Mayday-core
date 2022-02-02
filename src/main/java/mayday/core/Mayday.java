@@ -89,6 +89,7 @@ public final class Mayday extends MaydayFrame implements WindowListener
 		
 		System.out.println("Mayday starting...");
 
+
 		if (MaydayDefaults.isWebstartApplication()) {
 			// work around Mac Java's deficiency in correctly handling JNLP <argument> tags
 			String prop = System.getProperty(MaydayDefaults.WEBSTART_ARGUMENTS_KEY);
