@@ -25,10 +25,15 @@ public class PCAPlotComponent extends MultiPlotPanel {
 
 	protected boolean transpose_first;
 	protected int number_of_components;
+	protected String standardize_first;
+	protected boolean normalize_first;
+	protected boolean centering_first;
 	
-	public PCAPlotComponent( boolean transpose, int numberOfComponents ) {
+	public PCAPlotComponent( boolean transpose, int numberOfComponents, String standardize ) {
 		transpose_first = transpose;
 		number_of_components = numberOfComponents;
+		standardize_first = standardize;
+
 	}
 	
 	@SuppressWarnings("deprecation") // accessing the file menu is allowed

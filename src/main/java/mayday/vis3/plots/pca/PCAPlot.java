@@ -9,8 +9,11 @@ import mayday.core.pluma.PluginInfo;
 import mayday.core.pluma.PluginManagerException;
 import mayday.core.settings.SettingDialog;
 import mayday.core.settings.generic.HierarchicalSetting;
+import mayday.core.settings.generic.ObjectSelectionSetting;
+import mayday.core.settings.generic.SelectableHierarchicalSettingComponent_Combobox;
 import mayday.core.settings.typed.BooleanSetting;
 import mayday.core.settings.typed.IntSetting;
+import mayday.core.settings.typed.MultilineStringSetting;
 import mayday.vis3.PlotPlugin;
 import mayday.vis3.components.PlotWithLegendAndTitle;
 
@@ -37,7 +40,11 @@ public class PCAPlot extends PlotPlugin {
 	}
 
 	public Component getComponent() {
-		
+
+		ObjectSelectionSetting<String> standardize = new ObjectSelectionSetting<>("Standardize Matrix?",
+				"Compute the PCA on centered, normalized or original data?",
+				0, new String[]{"use original data", "only center data", "normalize data"});
+		standardize.setLayoutStyle(ObjectSelectionSetting.LayoutStyle.RADIOBUTTONS);
 		BooleanSetting transpose = new BooleanSetting("Transpose matrix",
 				"Compute the PCA on the transposed matrix (samples)?\n" +
 				"If unchecked, PCA is computed on the original matrix (experiments)",
@@ -45,6 +52,7 @@ public class PCAPlot extends PlotPlugin {
 		IntSetting numberOfComponents = new IntSetting("Number of components", "How many components should be displayed in scatter plots?", 3);
 		HierarchicalSetting hs = new HierarchicalSetting("Principal Component Plot")
 		.addSetting(transpose)
+		.addSetting(standardize)
 		.addSetting(numberOfComponents);
 		
 		SettingDialog sd = new SettingDialog(null, "Principal Component Plot", hs);
@@ -53,7 +61,7 @@ public class PCAPlot extends PlotPlugin {
 			return null;
 		
 		PlotWithLegendAndTitle myComponent;
-		myComponent = new PlotWithLegendAndTitle(new PCAPlotComponent(transpose.getBooleanValue(), numberOfComponents.getIntValue()));
+		myComponent = new PlotWithLegendAndTitle(new PCAPlotComponent(transpose.getBooleanValue(), numberOfComponents.getIntValue(), standardize.getObjectValue()));
 		myComponent.setTitledComponent(null);
 		return myComponent;
 	}
